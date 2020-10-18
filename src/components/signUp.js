@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -12,11 +10,9 @@ import School from '@material-ui/icons/School';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import useSignUpForm from './hooks';
 
 
 function Copyright() {
@@ -47,9 +43,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
-  select: {
-    width: '100%',
-  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -57,15 +50,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [cohort, setCohort] = React.useState('');
-
-  const handleChange = (event) => {
-    setCohort(event.target.value);
-  };
-  const handleSubmit = (ev) => {
-    ev.preventDefault()
-    console.log('Form submitted successfully')
+  const enroll = () => {
+    alert(`User Created! 
+      Name: ${inputs.firstName} ${inputs.lastName}
+      Email: ${inputs.email}
+      Cohort: ${inputs.cohort}
+      `);
   }
+  const initialValues = { firstName: '', lastName: '', email: '', registrationNumber: '', cohort: '' };
+  const { inputs, handleInputChange, handleSubmit } = useSignUpForm(initialValues, enroll);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -89,6 +82,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -100,6 +94,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -111,6 +106,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -118,28 +114,26 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="Registration Number"
+                name="registrationNumber"
                 label="Registration Number"
-
-                id="password"
-                autoComplete="current-password"
-
+                id="registration-number"
+                autoComplete="registration-number"
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>
               <Select
-                value={cohort}
-                onChange={handleChange}
+                value={inputs.cohort}
+                onChange={handleInputChange}
                 displayEmpty
-                className={classes.select}
+                fullWidth
                 inputProps={{ 'aria-label': 'Without label' }}
+                name="cohort"
               >
-                <MenuItem value="" disabled>
-                  Select Cohort
-                  </MenuItem>
-                <MenuItem value={10}>Morning</MenuItem>
-                <MenuItem value={20}>Afternoo</MenuItem>
-                <MenuItem value={30}>Evening</MenuItem>
+                <MenuItem value="" disabled>Select Cohort</MenuItem>
+                <MenuItem value={"morning"}>Morning</MenuItem>
+                <MenuItem value={"afternoon"}>Afternoon</MenuItem>
+                <MenuItem value={"evening"}>Evening</MenuItem>
               </Select>
 
             </Grid>
