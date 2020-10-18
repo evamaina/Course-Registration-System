@@ -154,7 +154,7 @@ export default function SignUp() {
           >
             ENROLL
           </Button>
-          <Typography>{error}</Typography>
+          <Typography color="error">{error}</Typography>
         </form>
       </div>
       <Box mt={5}>
