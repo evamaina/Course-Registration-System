@@ -13,14 +13,14 @@ import Container from '@material-ui/core/Container';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import useSignUpForm from './hooks';
-
+import axios from 'axios'
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Course Enrollment
+        Programming University
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -48,17 +48,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const API_URL = "http://localhost:3002/api";
+
 export default function SignUp() {
   const classes = useStyles();
-  const enroll = () => {
-    alert(`User Created! 
-      Name: ${inputs.firstName} ${inputs.lastName}
-      Email: ${inputs.email}
-      Cohort: ${inputs.cohort}
-      `);
+  const enroll = async () => {
+    const { firstName, lastName, email, cohort, registrationNumber } = inputs;
+    await axios.post(`${API_URL}/enroll`, { firstName, lastName, email, cohort, registrationNumber });
+    console.log(`Student Created! 
+      Name: ${firstName} ${lastName}
+      Email: ${email}
+      Cohort: ${cohort}`);
   }
+
   const initialValues = { firstName: '', lastName: '', email: '', registrationNumber: '', cohort: '' };
-  const { inputs, handleInputChange, handleSubmit } = useSignUpForm(initialValues, enroll);
+  const { inputs, handleInputChange, handleSubmit, valid, error } = useSignUpForm(initialValues, enroll);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -70,7 +74,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Welcome and enroll for a programming course
         </Typography>
-        <form className={classes.form} noValidate >
+        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -129,6 +133,7 @@ export default function SignUp() {
                 fullWidth
                 inputProps={{ 'aria-label': 'Without label' }}
                 name="cohort"
+                required
               >
                 <MenuItem value="" disabled>Select Cohort</MenuItem>
                 <MenuItem value={"morning"}>Morning</MenuItem>
@@ -145,16 +150,11 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
             onClick={handleSubmit}
+            disabled={!valid}
           >
             ENROLL
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
+          <Typography>{error}</Typography>
         </form>
       </div>
       <Box mt={5}>
