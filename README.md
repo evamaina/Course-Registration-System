@@ -15,6 +15,10 @@ Environment Variables
 
 ### Start
 
-Node: 
+Development: 
 
-- `npm start`
+- `npm dev-start`
+
+Production build:
+
+- `npm run build && npm run start`
