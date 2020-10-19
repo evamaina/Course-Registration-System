@@ -9,6 +9,10 @@ Install dependencies
 
 - `npm install`
 
+Environment Variables
+
+- REACT_APP_API_URL='http://localhost:3002'
+
 ### Start
 
 Node: 
