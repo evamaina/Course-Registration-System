@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const API_URL = `${process.env.REACT_APP_API_URL}/api`;
+// API URL will default to hosted url if not provided
+const API_URL = `${process.env.REACT_APP_API_URL || "https://course-registration-ms-api.herokuapp.com"}/api`;
 
 export default function SignUp() {
   const classes = useStyles();
