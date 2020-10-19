@@ -48,21 +48,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const API_URL = "http://localhost:3002/api";
+const API_URL = `${process.env.REACT_APP_API_URL}/api`;
 
 export default function SignUp() {
   const classes = useStyles();
   const enroll = async () => {
-    const { firstName, lastName, email, cohort, registrationNumber } = inputs;
-    await axios.post(`${API_URL}/enroll`, { firstName, lastName, email, cohort, registrationNumber });
-    console.log(`Student Created! 
-      Name: ${firstName} ${lastName}
-      Email: ${email}
-      Cohort: ${cohort}`);
+    try {
+      const { firstName, lastName, email, cohort, registrationNumber } = inputs;
+      await axios.post(`${API_URL}/enroll`, { firstName, lastName, email, cohort, registrationNumber });
+      alert(`Student Enrolled! 
+        Name: ${firstName} ${lastName}
+        Email: ${email}
+        Cohort: ${cohort}`);
+      setError("")
+    }
+    catch ({ response: { data } }) {
+      setError(`${data.error}` || "Failed Enrollment");
+      console.log(data)
+    }
   }
 
   const initialValues = { firstName: '', lastName: '', email: '', registrationNumber: '', cohort: '' };
-  const { inputs, handleInputChange, handleSubmit, valid, error } = useSignUpForm(initialValues, enroll);
+  const { inputs, handleInputChange, handleSubmit, setError, valid, error } = useSignUpForm(initialValues, enroll);
 
   return (
     <Container component="main" maxWidth="xs">

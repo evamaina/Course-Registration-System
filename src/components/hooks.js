@@ -21,6 +21,7 @@ const useSignUpForm = (initialValues, callback) => {
   return {
     handleSubmit,
     handleInputChange,
+    setError,
     inputs,
     valid,
     error
